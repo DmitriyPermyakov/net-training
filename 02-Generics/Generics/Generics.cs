@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Task.Generics {
 
@@ -23,8 +24,22 @@ namespace Task.Generics {
 		///   { new TimeSpan(1, 0, 0), new TimeSpan(0, 0, 30) } => "01:00:00,00:00:30",
 		/// </example>
 		public static string ConvertToString<T>(this IEnumerable<T> list) {
-			// TODO : Implement ConvertToString<T>
-			throw new NotImplementedException();
+			if(list != null)
+            {
+				StringBuilder sb = new StringBuilder();
+				int counter = 0;
+				foreach(var item in list)
+                {
+					if(counter != 0)
+                    {
+						sb.Append(ListSeparator);
+                    }
+					sb.Append(item.ToString());
+					counter++;
+                }
+				return sb.ToString();
+            }
+			return null;
 		}
 
 		/// <summary>
@@ -44,12 +59,112 @@ namespace Task.Generics {
 		///  "1:00:00,0:00:30" for TimeSpan =>  { new TimeSpan(1, 0, 0), new TimeSpan(0, 0, 30) },
 		///  </example>
 		public static IEnumerable<T> ConvertToList<T>(this string list) {
-			// TODO : Implement ConvertToList<T>
-			// HINT : Use TypeConverter.ConvertFromString method to parse string value
-			throw new NotImplementedException();
+			if(list != null)
+            {
+				Type t = typeof(T);
+
+				if (t.Equals(typeof(int)))
+				{
+					return ConvertToInt<T>(list);
+				}
+				
+
+				if (t.Equals(typeof(char)))
+                {
+					return ConvertToChar<T>(list);
+                }
+
+				if(t.Equals(typeof(bool)))
+                {
+					return ConvertToBool<T>(list);
+				}
+
+				if(t.Equals(typeof(ConsoleColor)))
+                {
+					return ConvertToConsoleColor<T>(list);
+				}
+
+                if (t.Equals(typeof(TimeSpan)))
+                {
+					return ConvertToTimeSpan<T>(list);
+                }
+            }
+            return null;
+		}
+		private static IEnumerable<T> ConvertToInt<T>(string list)
+		{
+			string[] stringArray = list.Split(',');
+			List<int> resultList = new List<int>();
+			int number;
+			foreach (var s in stringArray)
+			{
+				if (Int32.TryParse(s, out number))
+				{
+					resultList.Add(number);
+				}
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToChar<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<char> resultList = new List<char>();
+			char result;
+			foreach (var s in stringArray)
+			{
+				result = Convert.ToChar(s);
+				resultList.Add(result);
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToBool<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<bool> resultList = new List<bool>();
+			bool boolVariable;
+			foreach (var s in stringArray)
+			{
+				if (bool.TryParse(s, out boolVariable))
+				{
+					resultList.Add(boolVariable);
+				}
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToConsoleColor<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<ConsoleColor> resultList = new List<ConsoleColor>();
+			ConsoleColor color;
+			foreach (var s in stringArray)
+			{
+				if (Enum.TryParse(s, out color))
+				{
+					if (Enum.IsDefined(typeof(ConsoleColor), color))
+					{
+						resultList.Add(color);
+					}
+				}
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToTimeSpan<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<TimeSpan> dates = new List<TimeSpan>();
+			TimeSpan date;
+			foreach (var s in stringArray)
+			{
+				if (TimeSpan.TryParse(s, out date))
+				{
+					dates.Add(date);
+				}
+			}
+			return (IEnumerable<T>)dates;
 		}
 
 	}
+	
 
 	public static class ArrayExtentions {
 
