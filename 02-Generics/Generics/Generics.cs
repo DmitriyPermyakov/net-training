@@ -254,11 +254,7 @@ namespace Task.Generics {
 						Array.Sort(array, (x, y) => y.Item3.CompareTo(x.Item3));
 						break;
 				}
-			}
-            
-
-            // TODO :SortTupleArray<T1, T2, T3>
-            // HINT : Add required constraints to generic types
+			}            
         }
 
     }
@@ -270,11 +266,23 @@ namespace Task.Generics {
 	///   This code should return the same MyService object every time:
 	///   MyService singleton = Singleton<MyService>.Instance;
 	/// </example>
-	public static class Singleton<T> {
+	public static class Singleton<T> where T : class, new() {
 		// TODO : Implement generic singleton class 
-
+		private static volatile T instance;
+		private static readonly object syncRoot = new object();
 		public static T Instance {
-			get { throw new NotImplementedException(); }
+			get 
+			{
+				if(instance == null)
+                {
+					lock(syncRoot)
+                    {
+						instance = new T();
+                    }
+                }
+				return instance;
+				
+			}
 		}
 	}
 
