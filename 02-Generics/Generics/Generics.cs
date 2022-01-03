@@ -176,8 +176,19 @@ namespace Task.Generics {
 		/// <param name="index1">first index</param>
 		/// <param name="index2">second index</param>
 		public static void SwapArrayElements<T>(this T[] array, int index1, int index2) {
-			// TODO : Implement SwapArrayElements<T>
-			throw new NotImplementedException();
+			if(index1 > array.Length - 1 || index2 > array.Length)
+            {
+				throw new IndexOutOfRangeException();
+            }
+			if (index1 == index2)
+				return;
+
+			if(array.Length > 1 && index1 >= 0 &&  index2 >= 0 )
+            {
+				T temp = array[index1];
+				array[index1] = array[index2];
+				array[index2] = temp;
+            }
 		}
 
 		/// <summary>
@@ -206,12 +217,51 @@ namespace Task.Generics {
 		///     { 1, "a", false },
 		///   }
 		/// </example>
-		public static void SortTupleArray<T1, T2, T3>(this Tuple<T1, T2, T3>[] array, int sortedColumn, bool ascending) {
-			// TODO :SortTupleArray<T1, T2, T3>
-			// HINT : Add required constraints to generic types
-		}
+		public static void SortTupleArray<T1, T2, T3>(this Tuple<T1, T2, T3>[] array, int sortedColumn, bool ascending) where T1 : IComparable
+																														where T2 : IComparable
+																														where T3 : IComparable
+		{
+			if(sortedColumn < 0 || sortedColumn > 2)
+            {
+				throw new IndexOutOfRangeException();
+            }
+			if(ascending)
+            {
+				switch (sortedColumn)
+				{
+					case 0:
+						Array.Sort(array, (x, y) => x.Item1.CompareTo(y.Item1));
+						break;
+					case 1:
+						Array.Sort(array, (x, y) => x.Item2.CompareTo(y.Item2));
+						break;
+					case 2:
+						Array.Sort(array, (x, y) => x.Item3.CompareTo(y.Item3));
+						break;
+				}
+			}
+			else
+            {
+				switch (sortedColumn)
+				{
+					case 0:
+						Array.Sort(array, (x, y) => y.Item1.CompareTo(x.Item1));
+						break;
+					case 1:
+						Array.Sort(array, (x, y) => y.Item2.CompareTo(x.Item2));
+						break;
+					case 2:
+						Array.Sort(array, (x, y) => y.Item3.CompareTo(x.Item3));
+						break;
+				}
+			}
+            
 
-	}
+            // TODO :SortTupleArray<T1, T2, T3>
+            // HINT : Add required constraints to generic types
+        }
+
+    }
 
 	/// <summary>
 	///   Generic singleton class
