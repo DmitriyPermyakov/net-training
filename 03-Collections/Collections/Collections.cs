@@ -69,6 +69,10 @@ namespace Collections.Tasks {
         ///   {"TextReader","is","the","abstract","base","class","of","StreamReader","and","StringReader","which",...}
         /// </example>
         public static IEnumerable<string> Tokenize(TextReader reader) {
+            if(reader == null)
+            {
+                throw new ArgumentNullException();
+            }
             char[] delimeters = new[] { ',', ' ', '.', '\t', '\n' };
             
             string text = null;
@@ -129,8 +133,34 @@ namespace Collections.Tasks {
         ///    result = { 1, 2, 3, 4, 5, 6, 7, 8 } 
         /// </example>
         public static IEnumerable<T> DepthTraversalTree<T>(ITreeNode<T> root) {
-            // TODO : Implement the tree depth traversal algorithm
-            throw new NotImplementedException(); 
+            if(root == null)
+            {
+                throw new ArgumentNullException();
+            }
+            List<T> treeData = new List<T>();
+            Stack<ITreeNode<T>> treeStack = new Stack<ITreeNode<T>>();
+            treeStack.Push(root);
+
+            while(treeStack.Count != 0)
+            {
+                ITreeNode<T> node = treeStack.Pop();
+                treeData.Add(node.Data);
+                Console.WriteLine(node.Data);
+                if(node.Children != null)
+                {
+                    List<ITreeNode<T>> chidren = new List<ITreeNode<T>>();
+                    chidren.AddRange(node.Children);
+                    int count = chidren.Count;
+                
+                    for(int i = count - 1; i >= 0; i--)
+                    {
+                        treeStack.Push(chidren[i]);
+                    }
+                }
+                
+            }
+
+            return (IEnumerable<T>)treeData;
         }
 
         /// <summary>
