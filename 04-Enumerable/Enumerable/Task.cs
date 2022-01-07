@@ -286,8 +286,41 @@ namespace EnumerableTask {
         ///   { "", "" } => ","
         /// </example>
         public string GetStringOfSequence<T>(IEnumerable<T> data) {
-            // TODO : Implement GetStringOfSequence
-            throw new NotImplementedException();
+            if (data == null)
+                return string.Empty;
+
+            StringBuilder sb = new StringBuilder();
+            int itemCount = data.Count();
+            int index = 0;
+
+            foreach(var item in data)
+            {
+                if(typeof(T).Equals(typeof(string)))
+                {
+                    if(item == null)
+                    {
+                        sb.Append("null");
+                    } else if(item.ToString() == string.Empty)
+                    {
+                        sb.Append(string.Empty);
+                    } else
+                    {
+                        sb.Append(item);
+                    }
+                } 
+                else
+                {
+                    sb.Append(item.ToString());
+                }
+
+                if(index != itemCount -1)
+                {
+                    sb.Append(",");
+                }
+                index++;                
+            }
+            
+            return sb.ToString();
         }
 
         /// <summary> Finds the 3 largest numbers from a sequence</summary>
