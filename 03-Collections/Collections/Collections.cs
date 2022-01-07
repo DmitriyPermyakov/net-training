@@ -185,8 +185,30 @@ namespace Collections.Tasks {
         ///    result = { 1, 2, 3, 4, 5, 6, 7, 8 } 
         /// </example>
         public static IEnumerable<T> WidthTraversalTree<T>(ITreeNode<T> root) {
-            // TODO : Implement the tree width traversal algorithm
-            throw new NotImplementedException();
+            if (root == null)
+            {
+                throw new ArgumentNullException();
+            }
+            List<T> treeData = new List<T>();
+            Queue<ITreeNode<T>> treeQueue = new Queue<ITreeNode<T>>();
+            treeQueue.Enqueue(root);
+
+            while (treeQueue.Count != 0)
+            {
+                ITreeNode<T> node = treeQueue.Dequeue();
+                treeData.Add(node.Data);
+                Console.WriteLine(node.Data);
+                if (node.Children != null)
+                {
+                    foreach(var child in node.Children)
+                    {
+                        treeQueue.Enqueue(child);
+                    }
+                }
+
+            }
+
+            return (IEnumerable<T>)treeData;
         }
 
 
@@ -209,7 +231,6 @@ namespace Collections.Tasks {
         ///   source = { 1,2,3,4 }, count=5 => ArgumentOutOfRangeException
         /// </example>
         public static IEnumerable<T[]> GenerateAllPermutations<T>(T[] source, int count) {
-            // TODO : Implement GenerateAllPermutations method
             throw new NotImplementedException();
         }
 
