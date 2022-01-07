@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace EnumerableTask {
 
@@ -143,8 +144,43 @@ namespace EnumerableTask {
         ///  { "a","b","c" }, prefix=null => exception
         /// </example>
         public IEnumerable<string> GetPrefixItems(IEnumerable<string> data, string prefix) {
-            // TODO : Implement GetPrefixItems
-            throw new NotImplementedException();
+            if(prefix == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if(data == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+
+            List<string> result = new List<string>();
+            if (prefix == string.Empty)
+            {                
+                foreach (string substring in data)
+                {                    
+                    if(substring != null)
+                    {                        
+                        result.Add(substring);
+                    }
+                }
+                return (IEnumerable<string>)result;
+            } 
+            else 
+            {                
+                foreach (string substring in data)
+                {                    
+                    if (substring == null)
+                        continue;
+                    if (substring.Trim().StartsWith(prefix, true, CultureInfo.CurrentCulture))
+                    {                        
+                        result.Add(substring);
+                    }
+                }                
+            }
+
+            return (IEnumerable<string>)result;
         }
 
         /// <summary> Returns every second item from source sequence</summary>
