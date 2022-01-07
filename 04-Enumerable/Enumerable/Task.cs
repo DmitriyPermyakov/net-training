@@ -336,8 +336,22 @@ namespace EnumerableTask {
         ///   { 10, 10, 10, 10 } => { 10, 10, 10 }
         /// </example>
         public IEnumerable<int> Get3TopItems(IEnumerable<int> data) {
-            // TODO : Implement Get3TopItems
-            throw new NotImplementedException();
+            int[] dataInArray = data.ToArray();
+            Array.Sort(dataInArray);
+            IEnumerable<int> reversedArray = dataInArray.Reverse();
+            List<int> result = new List<int>();
+            int index = 1;
+            int neededQuantity = 3;
+            foreach(int item in reversedArray)
+            {
+                result.Add(item);                
+                if(index >= neededQuantity)
+                {
+                    break;
+                }
+                index++;
+            }
+            return (IEnumerable<int>)result;
         }
 
         /// <summary> Calculates the count of numbers that are greater then 10</summary>
