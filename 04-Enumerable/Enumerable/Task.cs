@@ -77,8 +77,16 @@ namespace EnumerableTask {
         ///   { -1, -2, -3, -4, -5 } => { 1, 4, 9, 16, 25 }
         /// </example>
         public IEnumerable<long> GetSquareSequence(IEnumerable<int> data) {
-            // TODO : Implement GetSquareSequence
-            throw new NotImplementedException();
+            List<long> result = new List<long>();
+
+            if(data != null)
+            {
+                foreach(int n in data)
+                {
+                    result.Add((long)n * (long)n);
+                }
+            }
+            return (IEnumerable<long>)result;
         }
 
         /// <summary>Transforms int sequence to its moving sum sequence, 
