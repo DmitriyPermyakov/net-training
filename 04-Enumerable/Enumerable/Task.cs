@@ -494,8 +494,17 @@ namespace EnumerableTask {
         ///    null => exception
         /// </example>
         public int GetDigitCharsCount(string data) {
-            // TODO : Implement GetDigitCharsCount
-            throw new NotImplementedException();
+            if (data == null)
+                throw new ArgumentNullException();
+
+            if (data.Length == 0)
+                return 0;
+            int count = 0;
+            foreach (char c in data)
+                if (char.IsDigit(c))
+                    count++;
+
+            return count;
         }
 
 
