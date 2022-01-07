@@ -438,7 +438,6 @@ namespace EnumerableTask {
         ///   { } => { }
         /// </example>
         public IEnumerable<Tuple<string,int>> GetCountOfStrings(IEnumerable<string> data) {
-            // TODO : Implement GetCountOfStrings
             throw new NotImplementedException();
         }
 
@@ -455,8 +454,28 @@ namespace EnumerableTask {
         ///   { } => { }
         /// </example>
         public int GetCountOfStringsWithMaxLength(IEnumerable<string> data) {
-            // TODO : Implement GetCountOfStringsWithMaxLength
-            throw new NotImplementedException();
+            if (data.Count() == 0)
+                return 0;
+
+            SortedDictionary<int, int> lenghtDictionary = new SortedDictionary<int, int>();
+            foreach(var s in data)
+            {
+                int length;
+                if (s == null)
+                    length = 0;
+                else
+                    length = s.Length;
+
+                if(lenghtDictionary.ContainsKey(length))
+                {
+                   lenghtDictionary[length]++;
+                }
+                else
+                {
+                    lenghtDictionary.Add(length, 1);
+                }                
+            }            
+            return lenghtDictionary.Last().Value;
         }
 
 
