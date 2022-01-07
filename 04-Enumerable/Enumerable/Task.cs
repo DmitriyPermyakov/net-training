@@ -224,8 +224,19 @@ namespace EnumerableTask {
         ///   { 1,2,3,4,5} => { 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 }
         /// </example>
         public IEnumerable<T> PropagateItemsByPositionIndex<T>(IEnumerable<T> data) {
-            // TODO : Implement PropagateItemsByPositionIndex
-            throw new NotImplementedException();
+            List<T> result = new List<T>();
+            int elementIndex = 1;
+
+            foreach(var item in data)
+            {
+                for(int cycleCount = 1; cycleCount <= elementIndex; cycleCount++)
+                {
+                    result.Add(item);
+                }
+                elementIndex++;
+            }
+
+            return (IEnumerable<T>)result;
         }
 
         /// <summary>Finds all used char in string sequence</summary>
