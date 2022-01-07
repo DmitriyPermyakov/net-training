@@ -387,8 +387,17 @@ namespace EnumerableTask {
         ///   { } => null
         /// </example>
         public string GetFirstContainsFirst(IEnumerable<string> data) {
-            // TODO : Implement GetFirstContainsFirst
-            throw new NotImplementedException();
+            if (data == null)
+                return null;
+            string searchingString = "first";
+            foreach(string s in data)
+            {
+                if (s == null)
+                    continue;
+                if (s.ToLower().Contains(searchingString))
+                    return s;
+            }
+            return null;
         }
 
         /// <summary> Counts the number of unique strings with length=3 </summary>
