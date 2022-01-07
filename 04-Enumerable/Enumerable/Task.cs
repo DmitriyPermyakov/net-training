@@ -412,8 +412,18 @@ namespace EnumerableTask {
         ///   { } => 0
         /// </example>
         public int GetCountOfStringsWithLengthEqualsTo3(IEnumerable<string> data) {
-            // TODO : Implement GetCountOfStringsWithLengthEqualsTo3
-            throw new NotImplementedException();
+            if (data == null)
+                return 0;
+
+            HashSet<string> stringWithLengthThree = new HashSet<string>();
+            foreach(var s in data)
+            {
+                if (s == null)
+                    continue;
+                if (s.Length == 3)
+                    stringWithLengthThree.Add(s);
+            }
+            return stringWithLengthThree.Count;
         }
 
         /// <summary> Counts the number of each strings in sequence </summary>
