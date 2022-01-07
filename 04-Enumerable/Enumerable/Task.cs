@@ -193,8 +193,21 @@ namespace EnumerableTask {
         ///  { "a" } => { }
         /// </example>
         public IEnumerable<T> GetEvenItems<T>(IEnumerable<T> data) {
-            // TODO : Implement GetEvenItems
-            throw new NotImplementedException();
+            if (data == null)
+                throw new ArgumentNullException();
+
+            int index = 1;
+            List<T> result = new List<T>();
+            foreach(var item in data)
+            {
+                if(index % 2 == 0)
+                {
+                    result.Add(item);
+                }
+                index++;
+            }
+
+            return (IEnumerable<T>)result;
         }
 
         /// <summary> Propagate every item in sequence its position times</summary>
