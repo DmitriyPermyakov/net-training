@@ -252,8 +252,24 @@ namespace EnumerableTask {
         ///   { } => { }
         /// </example>
         public IEnumerable<char> GetUsedChars(IEnumerable<string> data) {
-            // TODO : Implement GetUsedChars
-            throw new NotImplementedException();
+            List<char> result = new List<char>();
+            if(data != null)
+            {
+                foreach(string item in data)
+                {
+                    if(!string.IsNullOrEmpty(item))
+                    {
+                        foreach(var c in item)
+                        {
+                            if(!result.Contains(c))
+                            {
+                                result.Add(c);
+                            }
+                        }
+                    }
+                }
+            }
+            return (IEnumerable<char>)result;
         }
 
 
