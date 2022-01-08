@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Reflection;
@@ -517,6 +518,7 @@ namespace EnumerableTask {
         public int GetSpecificEventEntriesCount(EventLogEntryType value) {
             // TODO : Implement GetSpecificEventEntriesCount
             EventLogEntryCollection systemEvents = (new EventLog("System", ".")).Entries;
+            
             throw new NotImplementedException();
         }
 
@@ -533,8 +535,24 @@ namespace EnumerableTask {
         ///    
         /// </example>
         public IEnumerable<string> GetIEnumerableTypesNames(Assembly assembly) {
-            // TODO : Implement GetIEnumerableTypesNames
-            throw new NotImplementedException();
+            if(assembly == null)
+            {
+                throw new ArgumentNullException();
+            }
+            Type[] types = assembly.GetExportedTypes();
+            
+            List<string> typeList = new List<string>();
+            foreach(Type t in types)
+            {
+                if(typeof(IEnumerable).IsAssignableFrom(t))
+                {   
+                    typeList.Add(t.Name);
+                }
+            }
+
+            typeList.Sort();
+            
+            return (IEnumerable<string>)typeList;
         }
 
         /// <summary>Calculates sales sum by quarter</summary>
