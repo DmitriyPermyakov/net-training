@@ -665,8 +665,32 @@ namespace EnumerableTask {
         ///   {"one","one","one","zero"} => {"zero","one","one","one"}
         /// </example>
         public IEnumerable<string> SortDigitNamesByNumericOrder(IEnumerable<string> data) {
-            // TODO : Implement SortDigitNamesByNumericOrder
-            throw new NotImplementedException();
+            if (data == null)
+                return new string[] { };
+
+            Dictionary<string, int> template = new Dictionary<string, int>()
+            {
+                { "zero", 0 },
+                { "one", 1 },
+                { "two", 2 },
+                { "three", 3 },
+                { "four", 4 },
+                { "five", 5 },
+                { "six", 6 },
+                { "seven", 7 },
+                { "eight", 8 },
+                { "nine", 9 },
+            };
+
+            List<KeyValuePair<string, int>> dataDictionary = new List<KeyValuePair<string, int>>();
+            foreach(string s in data)
+            {
+                dataDictionary.Add(new KeyValuePair<string, int>(s, template[s]));
+            }
+
+            var result = dataDictionary.OrderBy(d => d.Value).Select(v => v.Key);
+
+            return result;
         }
 
         /// <summary> Combines numbers and fruits </summary>
