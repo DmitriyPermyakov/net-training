@@ -707,8 +707,22 @@ namespace EnumerableTask {
         ///  { }, {"apple", "bananas" } => { }
         /// </example>
         public IEnumerable<string> CombineNumbersAndFruits(IEnumerable<string> numbers, IEnumerable<string> fruits) {
-            // TODO : Implement CombinesNumbersAndFruits
-            throw new NotImplementedException();
+            if (numbers == null || fruits == null)
+                return new string[] { };
+
+            string[] numbersArray = numbers.ToArray();
+            string[] fruitsArray = fruits.ToArray();
+
+            int cycles = numbers.Count() > fruits.Count() ? fruits.Count() : numbers.Count(); 
+            
+            string[] result = new string[cycles];
+            for(int i = 0; i < cycles; i++)
+            {
+                result[i] = numbersArray[i] + " " + fruitsArray[i];
+                Console.WriteLine(result[i]);
+            }
+
+            return result;
         }
 
 
