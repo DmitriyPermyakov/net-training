@@ -10,7 +10,18 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace EnumerableTask {
-
+    public class StringComparer: IComparer<string>
+    {
+        public int Compare(string s1, string s2)
+        {
+            if (s1.Length == s2.Length)
+                return s1.CompareTo(s2);
+            else if (s1.Length > s2.Length)
+                return 1;
+            else
+                return -1;
+        }
+    }
     public class Task {
 
         /// <summary> Transforms all strings to uppercase</summary>
@@ -603,8 +614,12 @@ namespace EnumerableTask {
         ///  {"c","cc","b","bb","a,"aa"} => {"a","b","c","aa","bb","cc"}
         /// </example>
         public IEnumerable<string> SortStringsByLengthAndAlphabet(IEnumerable<string> data) {
-            // TODO : Implement SortStringsByLengthAndAlphabet
-            throw new NotImplementedException();
+            if (data == null)
+                return new string[] { };
+
+            string[] stringToSort = data.ToArray();
+            Array.Sort(stringToSort, new StringComparer());
+            return stringToSort;
         }
 
         /// <summary> Finds all missing digits </summary>
