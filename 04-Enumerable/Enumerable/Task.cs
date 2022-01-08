@@ -7,6 +7,7 @@ using System.Reflection;
 using System.IO;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace EnumerableTask {
 
@@ -616,9 +617,23 @@ namespace EnumerableTask {
         ///   {"aaa","a1","b","c2","d","e3","f01234"} => {'5','6','7','8','9'}
         ///   {"a","b","c","9876543210"} => {}
         /// </example>
-        public IEnumerable<char> GetMissingDigits(IEnumerable<string> data) {
-            // TODO : Implement GetMissingDigits
-            throw new NotImplementedException();
+        public IEnumerable<char> GetMissingDigits(IEnumerable<string> data) {            
+            string template = "0123456789";            
+
+            if (data.Count() == 0)
+                return (IEnumerable<char>)template;
+
+            foreach (char t in template)
+            {
+                foreach (string s in data)
+                {
+                    if (s.Contains(t))
+                        template = Regex.Replace(template, t.ToString(), string.Empty);
+                }
+            }
+
+            Console.WriteLine(template);
+            return (IEnumerable<char>)template;
         }
 
 
