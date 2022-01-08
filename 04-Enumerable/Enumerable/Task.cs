@@ -567,8 +567,27 @@ namespace EnumerableTask {
         ///    {(1/1/2010, 10)  , (4/4/2010, 10), (10/10/2010, 10) } => { 10, 10, 0, 10 }
         /// </example>
         public int[] GetQuarterSales(IEnumerable<Tuple<DateTime, int>> sales) {
-            // TODO : Implement GetQuarterSales
-            throw new NotImplementedException();
+            int[] salesSumForQuarter = new int[4];
+
+            foreach(var salesData in sales)
+            {
+                int date = salesData.Item1.Month;
+                if (date >= 1 && date <= 3)
+                {
+                    salesSumForQuarter[0] += salesData.Item2;
+                } else if (date >= 4 && date <= 6 )
+                {
+                    salesSumForQuarter[1] += salesData.Item2;
+                } else if(date >= 7 && date <= 9)
+                {
+                    salesSumForQuarter[2] += salesData.Item2;
+                } else if( date >= 10 && date <= 12 )
+                {
+                    salesSumForQuarter[3] += salesData.Item2;
+                }
+            }
+            return salesSumForQuarter;
+            
         }
 
 
