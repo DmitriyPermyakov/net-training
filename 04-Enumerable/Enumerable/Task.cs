@@ -897,8 +897,10 @@ namespace EnumerableTask {
         /// { -10 } => { -10.0 } => true
         /// </example>
         public bool AreNumericListsEqual(IEnumerable<int> integers, IEnumerable<double> doubles) {
-            // TODO : Implement AreNumericListsEqual
-            throw new NotImplementedException();
+            var result = integers.Zip(doubles, (i, d) => new { IntegerValue = i, DoubleValue = d })
+                                 .All(value => value.DoubleValue.Equals((double)value.IntegerValue));
+                    
+            return result;
         }
 
         /// <summary>
