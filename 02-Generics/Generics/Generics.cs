@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Task.Generics {
 
@@ -23,8 +24,22 @@ namespace Task.Generics {
 		///   { new TimeSpan(1, 0, 0), new TimeSpan(0, 0, 30) } => "01:00:00,00:00:30",
 		/// </example>
 		public static string ConvertToString<T>(this IEnumerable<T> list) {
-			// TODO : Implement ConvertToString<T>
-			throw new NotImplementedException();
+			if(list != null)
+            {
+				StringBuilder sb = new StringBuilder();
+				int counter = 0;
+				foreach(var item in list)
+                {
+					if(counter != 0)
+                    {
+						sb.Append(ListSeparator);
+                    }
+					sb.Append(item.ToString());
+					counter++;
+                }
+				return sb.ToString();
+            }
+			return null;
 		}
 
 		/// <summary>
@@ -44,12 +59,112 @@ namespace Task.Generics {
 		///  "1:00:00,0:00:30" for TimeSpan =>  { new TimeSpan(1, 0, 0), new TimeSpan(0, 0, 30) },
 		///  </example>
 		public static IEnumerable<T> ConvertToList<T>(this string list) {
-			// TODO : Implement ConvertToList<T>
-			// HINT : Use TypeConverter.ConvertFromString method to parse string value
-			throw new NotImplementedException();
+			if(list != null)
+            {
+				Type t = typeof(T);
+
+				if (t.Equals(typeof(int)))
+				{
+					return ConvertToInt<T>(list);
+				}
+				
+
+				if (t.Equals(typeof(char)))
+                {
+					return ConvertToChar<T>(list);
+                }
+
+				if(t.Equals(typeof(bool)))
+                {
+					return ConvertToBool<T>(list);
+				}
+
+				if(t.Equals(typeof(ConsoleColor)))
+                {
+					return ConvertToConsoleColor<T>(list);
+				}
+
+                if (t.Equals(typeof(TimeSpan)))
+                {
+					return ConvertToTimeSpan<T>(list);
+                }
+            }
+            return null;
+		}
+		private static IEnumerable<T> ConvertToInt<T>(string list)
+		{
+			string[] stringArray = list.Split(',');
+			List<int> resultList = new List<int>();
+			int number;
+			foreach (var s in stringArray)
+			{
+				if (Int32.TryParse(s, out number))
+				{
+					resultList.Add(number);
+				}
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToChar<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<char> resultList = new List<char>();
+			char result;
+			foreach (var s in stringArray)
+			{
+				result = Convert.ToChar(s);
+				resultList.Add(result);
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToBool<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<bool> resultList = new List<bool>();
+			bool boolVariable;
+			foreach (var s in stringArray)
+			{
+				if (bool.TryParse(s, out boolVariable))
+				{
+					resultList.Add(boolVariable);
+				}
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToConsoleColor<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<ConsoleColor> resultList = new List<ConsoleColor>();
+			ConsoleColor color;
+			foreach (var s in stringArray)
+			{
+				if (Enum.TryParse(s, out color))
+				{
+					if (Enum.IsDefined(typeof(ConsoleColor), color))
+					{
+						resultList.Add(color);
+					}
+				}
+			}
+			return (IEnumerable<T>)resultList;
+		}
+		private static IEnumerable<T> ConvertToTimeSpan<T>(string list)
+        {
+			string[] stringArray = list.Split(',');
+			List<TimeSpan> dates = new List<TimeSpan>();
+			TimeSpan date;
+			foreach (var s in stringArray)
+			{
+				if (TimeSpan.TryParse(s, out date))
+				{
+					dates.Add(date);
+				}
+			}
+			return (IEnumerable<T>)dates;
 		}
 
 	}
+	
 
 	public static class ArrayExtentions {
 
@@ -61,8 +176,19 @@ namespace Task.Generics {
 		/// <param name="index1">first index</param>
 		/// <param name="index2">second index</param>
 		public static void SwapArrayElements<T>(this T[] array, int index1, int index2) {
-			// TODO : Implement SwapArrayElements<T>
-			throw new NotImplementedException();
+			if(index1 > array.Length - 1 || index2 > array.Length)
+            {
+				throw new IndexOutOfRangeException();
+            }
+			if (index1 == index2)
+				return;
+
+			if(array.Length > 1 && index1 >= 0 &&  index2 >= 0 )
+            {
+				T temp = array[index1];
+				array[index1] = array[index2];
+				array[index2] = temp;
+            }
 		}
 
 		/// <summary>
@@ -91,12 +217,47 @@ namespace Task.Generics {
 		///     { 1, "a", false },
 		///   }
 		/// </example>
-		public static void SortTupleArray<T1, T2, T3>(this Tuple<T1, T2, T3>[] array, int sortedColumn, bool ascending) {
-			// TODO :SortTupleArray<T1, T2, T3>
-			// HINT : Add required constraints to generic types
-		}
+		public static void SortTupleArray<T1, T2, T3>(this Tuple<T1, T2, T3>[] array, int sortedColumn, bool ascending) where T1 : IComparable
+																														where T2 : IComparable
+																														where T3 : IComparable
+		{
+			if(sortedColumn < 0 || sortedColumn > 2)
+            {
+				throw new IndexOutOfRangeException();
+            }
+			if(ascending)
+            {
+				switch (sortedColumn)
+				{
+					case 0:
+						Array.Sort(array, (x, y) => x.Item1.CompareTo(y.Item1));
+						break;
+					case 1:
+						Array.Sort(array, (x, y) => x.Item2.CompareTo(y.Item2));
+						break;
+					case 2:
+						Array.Sort(array, (x, y) => x.Item3.CompareTo(y.Item3));
+						break;
+				}
+			}
+			else
+            {
+				switch (sortedColumn)
+				{
+					case 0:
+						Array.Sort(array, (x, y) => y.Item1.CompareTo(x.Item1));
+						break;
+					case 1:
+						Array.Sort(array, (x, y) => y.Item2.CompareTo(x.Item2));
+						break;
+					case 2:
+						Array.Sort(array, (x, y) => y.Item3.CompareTo(x.Item3));
+						break;
+				}
+			}            
+        }
 
-	}
+    }
 
 	/// <summary>
 	///   Generic singleton class
@@ -105,11 +266,23 @@ namespace Task.Generics {
 	///   This code should return the same MyService object every time:
 	///   MyService singleton = Singleton<MyService>.Instance;
 	/// </example>
-	public static class Singleton<T> {
+	public static class Singleton<T> where T : class, new() {
 		// TODO : Implement generic singleton class 
-
+		private static volatile T instance;
+		private static readonly object syncRoot = new object();
 		public static T Instance {
-			get { throw new NotImplementedException(); }
+			get 
+			{
+				if(instance == null)
+                {
+					lock(syncRoot)
+                    {
+						instance = new T();
+                    }
+                }
+				return instance;
+				
+			}
 		}
 	}
 
