@@ -809,8 +809,10 @@ namespace EnumerableTask {
         ///   { } => 0
         /// </example>
         public int GetTotalStringsLength(IEnumerable<string> data) {
-            // TODO : Implement GetTotalStringsLength
-            throw new NotImplementedException();
+            if (data == null)
+                return 0;
+            var result = data.Where(s => s != null).Sum(n => n.Length);
+            return result;
         }
 
         /// <summary> Determines whether sequence has null elements</summary>
