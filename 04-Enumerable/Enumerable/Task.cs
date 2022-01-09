@@ -918,8 +918,13 @@ namespace EnumerableTask {
         ///    { "1.1", "1.2", "1.5", "2.0" }, "2.0" => null
         /// </example>
         public string GetNextVersionFromList(IEnumerable<string> versions, string currentVersion) {
-            // TODO : Implement GetNextVersionFromList
-            throw new NotImplementedException();
+            string[] list = versions.ToArray();
+            int indexInList = Array.IndexOf(list, currentVersion);
+            int indexOfLastElement = list.Length - 1;
+            if (indexInList == -1 || indexInList == indexOfLastElement)
+                return null;
+            else
+                return list.ElementAt(indexInList + 1);
         }
 
         /// <summary>
