@@ -765,8 +765,13 @@ namespace EnumerableTask {
         ///    { } => 0
         /// </example>
         public int GetSumOfAllInts(object[] data) {
-            // TODO : Implement GetSumOfAllInts
-            throw new NotImplementedException();
+            if (data == null)
+                return 0;
+            var integers = data.Where(x => x.GetType().Equals(typeof(int))).Select(n => (int)n).ToList();
+            if (integers.Count() == 0)
+                return 0;
+            var sum = integers.Aggregate((x, y) => x + y);
+            return sum;
         }
 
 
