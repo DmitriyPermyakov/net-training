@@ -738,8 +738,19 @@ namespace EnumerableTask {
         ///   {"ab","ba","aabb","baba"} => {"a","b"}
         /// </example>
         public IEnumerable<char> GetCommonChars(IEnumerable<string> data) {
-            // TODO : Implement GetCommonChars
-            throw new NotImplementedException();
+
+            if (data == null || data.Contains(string.Empty))
+                return new char[] { };
+
+            string[] example = data.ToArray();
+            List<char> common = new List<char>();
+            for (int i = 0; i < example.Length - 1; i++)
+            {
+                common = example[0].Intersect(example[i + 1]).ToList();
+                
+            }           
+                
+            return common;
         }
 
         /// <summary> Calculates sum of all integers from object array </summary>
