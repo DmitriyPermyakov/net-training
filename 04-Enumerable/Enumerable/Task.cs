@@ -843,8 +843,12 @@ namespace EnumerableTask {
         ///   { } => false
         /// </example>
         public bool IsAllStringsAreUppercase(IEnumerable<string> data) {
-            // TODO : Implement IsAllStringsAreUppercase
-            throw new NotImplementedException();
+            if (data.Contains(string.Empty) || data.Count() == 0)
+                return false;
+
+            var result = data.SelectMany(s => s).All(c => Char.IsUpper(c));
+            Console.WriteLine(result);
+            return result;
         }
 
         /// <summary> Finds first subsequence of negative integers </summary>
